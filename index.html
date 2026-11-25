@@ -1,29 +1,125 @@
-Crea una aplicación Android nativa completa en Kotlin llamada "AudioStickers" con las siguientes características:
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Demo Stickers</title>
+<style>
+  * { box-sizing: border-box; }
+  body {
+    font-family: -apple-system, Arial, sans-serif;
+    background: #f4f4f8;
+    margin: 0;
+    padding: 20px;
+    text-align: center;
+    color: #333;
+  }
+  h1 { font-size: 22px; margin-bottom: 4px; }
+  p.sub { color: #777; font-size: 13px; margin-top: 0; }
+  .card {
+    background: #fff;
+    border-radius: 16px;
+    padding: 20px;
+    max-width: 400px;
+    margin: 20px auto;
+    box-shadow: 0 4px 14px rgba(0,0,0,0.08);
+  }
+  button, label.btn {
+    display: inline-block;
+    background: #7c4dff;
+    color: #fff;
+    border: none;
+    padding: 14px 22px;
+    font-size: 16px;
+    border-radius: 12px;
+    cursor: pointer;
+    margin: 6px 0;
+    width: 100%;
+    font-weight: 600;
+  }
+  button:disabled { background: #bbb; }
+  input[type="file"] { display: none; }
+  .preview {
+    margin-top: 16px;
+    display: flex;
+    justify-content: center;
+  }
+  canvas {
+    max-width: 100%;
+    border: 1px dashed #ccc;
+    border-radius: 12px;
+    background-image:
+      linear-gradient(45deg, #eee 25%, transparent 25%),
+      linear-gradient(-45deg, #eee 25%, transparent 25%),
+      linear-gradient(45deg, transparent 75%, #eee 75%),
+      linear-gradient(-45deg, transparent 75%, #eee 75%);
+    background-size: 20px 20px;
+    background-position: 0 0, 0 10px, 10px -10px, -10px 0px;
+  }
+  .hidden { display: none; }
+  a.download {
+    display: block;
+    text-decoration: none;
+    background: #25d366;
+    color: white;
+    padding: 14px;
+    border-radius: 12px;
+    font-weight: 600;
+    margin-top: 12px;
+  }
+</style>
+</head>
+<body>
 
-FUNCIONALIDAD PRINCIPAL:
-1. Pantalla de inicio con un botón "Importar video" que abra la galería para seleccionar un video local.
-2. Tras seleccionar el video, mostrar una pantalla de edición con:
-   - Vista previa del video con un recuadro cuadrado (1:1) que indique la zona del sticker.
-   - Gestos de pinch-to-zoom y arrastre para ajustar el encuadre dentro del cuadrado.
-   - Slider para recortar los primeros 10 segundos del video.
-   - Campo de texto para añadir texto encima del sticker.
-   - Selector de color para el texto y para el contorno del texto.
-   - Botón "Exportar sticker" que genere un archivo WebP animado de 512x512 píxeles y lo guarde en la galería del dispositivo.
-3. Pantalla de galería con grid de stickers creados y opción de marcar como favorito.
+<h1>🎨 Demo Stickers</h1>
+<p class="sub">Crea un sticker 512×512 desde tu foto</p>
 
-DISEÑO:
-- Estilo moderno, similar a apps de stickers como TTStickers pero con identidad propia.
-- Color principal morado (#7C4DFF).
-- Fondo oscuro (#1A1A2E) con tarjetas claras.
-- Iconos Material Design 3.
-- Tipografía redondeada.
-- Botones grandes y redondeados.
+<div class="card">
+  <label class="btn" for="fileInput">📷 Elegir foto</label>
+  <input type="file" id="fileInput" accept="image/*">
 
-REQUISITOS TÉCNICOS:
-- Usa MediaCodec o FFmpeg para convertir el video a WebP animado.
-- Usa ExoPlayer o VideoView para la vista previa.
-- Guarda los stickers en la carpeta pública Pictures/AudioStickers.
-- Pide los permisos necesarios (lectura de medios, escritura).
-- Estructura de proyecto Android estándar con Gradle.
+  <div class="preview">
+    <canvas id="canvas" width="512" height="512" class="hidden"></canvas>
+  </div>
 
-Dame el código completo de TODOS los archivos necesarios (MainActivity.kt, pantallas, layouts XML, AndroidManifest.xml, build.gradle, etc.) para poder copiarlo y pegarlo en Android Studio o en un entorno de compilación.
+  <button id="downloadBtn" class="hidden">⬇️ Descargar sticker</button>
+</div>
+
+<script>
+const input = document.getElementById('fileInput');
+const canvas = document.getElementById('canvas');
+const ctx = canvas.getContext('2d');
+const downloadBtn = document.getElementById('downloadBtn');
+
+input.addEventListener('change', (e) => {
+  const file = e.target.files[0];
+  if (!file) return;
+
+  const img = new Image();
+  img.onload = () => {
+    ctx.clearRect(0, 0, 512, 512);
+
+    const scale = Math.min(512 / img.width, 512 / img.height);
+    const w = img.width * scale;
+    const h = img.height * scale;
+    const x = (512 - w) / 2;
+    const y = (512 - h) / 2;
+
+    ctx.drawImage(img, x, y, w, h);
+
+    canvas.classList.remove('hidden');
+    downloadBtn.classList.remove('hidden');
+  };
+  img.src = URL.createObjectURL(file);
+});
+
+downloadBtn.addEventListener('click', () => {
+  const link = document.createElement('a');
+  link.download = 'sticker_' + Date.now() + '.png';
+  link.href = canvas.toDataURL('image/png');
+  link.click();
+});
+</script>
+
+</body>
+</html>
