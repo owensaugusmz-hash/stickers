@@ -1,0 +1,29 @@
+Crea una aplicación Android nativa completa en Kotlin llamada "AudioStickers" con las siguientes características:
+
+FUNCIONALIDAD PRINCIPAL:
+1. Pantalla de inicio con un botón "Importar video" que abra la galería para seleccionar un video local.
+2. Tras seleccionar el video, mostrar una pantalla de edición con:
+   - Vista previa del video con un recuadro cuadrado (1:1) que indique la zona del sticker.
+   - Gestos de pinch-to-zoom y arrastre para ajustar el encuadre dentro del cuadrado.
+   - Slider para recortar los primeros 10 segundos del video.
+   - Campo de texto para añadir texto encima del sticker.
+   - Selector de color para el texto y para el contorno del texto.
+   - Botón "Exportar sticker" que genere un archivo WebP animado de 512x512 píxeles y lo guarde en la galería del dispositivo.
+3. Pantalla de galería con grid de stickers creados y opción de marcar como favorito.
+
+DISEÑO:
+- Estilo moderno, similar a apps de stickers como TTStickers pero con identidad propia.
+- Color principal morado (#7C4DFF).
+- Fondo oscuro (#1A1A2E) con tarjetas claras.
+- Iconos Material Design 3.
+- Tipografía redondeada.
+- Botones grandes y redondeados.
+
+REQUISITOS TÉCNICOS:
+- Usa MediaCodec o FFmpeg para convertir el video a WebP animado.
+- Usa ExoPlayer o VideoView para la vista previa.
+- Guarda los stickers en la carpeta pública Pictures/AudioStickers.
+- Pide los permisos necesarios (lectura de medios, escritura).
+- Estructura de proyecto Android estándar con Gradle.
+
+Dame el código completo de TODOS los archivos necesarios (MainActivity.kt, pantallas, layouts XML, AndroidManifest.xml, build.gradle, etc.) para poder copiarlo y pegarlo en Android Studio o en un entorno de compilación.
